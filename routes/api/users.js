@@ -4,7 +4,8 @@ const router = express.Router();
 //@route    GET api/use
 //@desc     Test route
 //@access   Public
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
+    console.log(req.body);
     res.send('User route');
 });
 
