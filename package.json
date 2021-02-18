@@ -1,0 +1,19 @@
+{
+  "name": "linda-dev-connector-app",
+  "version": "1.0.0",
+  "description": "MERN Full Stack Dev Connect App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANE-UCD-ILT-MERN-STACK-TRAINING/Linda-dev-connector-app.git"
+  },
+  "author": "Linda Kovacs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ANE-UCD-ILT-MERN-STACK-TRAINING/Linda-dev-connector-app/issues"
+  },
+  "homepage": "https://github.com/ANE-UCD-ILT-MERN-STACK-TRAINING/Linda-dev-connector-app#readme"
+}
