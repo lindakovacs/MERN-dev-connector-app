@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator/check');
+
+const { check, validationResult } = require('express-validator');
+
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
@@ -24,7 +26,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 //@route    POST api/profile
-//@desc     Create or Update as User Profile
+//@desc     Create or Update as USer Profile
 //@access   Private
 
 router.post(
@@ -41,7 +43,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-        const {
+    const {
       company,
       website,
       location,
@@ -66,10 +68,41 @@ router.post(
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
     if (skills) {
-      profileFields.skills = skills.split(',').map(skill => skill.trim());
+      profileFields.skills = skills.split(',').map((skill) => skill.trim());
     }
+
     console.log(profileFields);
-    res.send('Hello');
+
+    // Build Social object
+    profileFields.social = {};
+    if (youtube) profileFields.social.youtube = youtube;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (instagram) profileFields.social.instagram = instagram;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
+      if (profile) {
+        // Update Profile
+        profile = await Profile.findOneAndUpdate(
+          // The user id from token is sent in auth to route.
+          { user: req.user.id },
+          // The $set operator replaces the value of the field with the specified value.
+          { $set: profileFields },
+          // New option is set to true so after update was applied to return the document.
+          { new: true }
+        );
+        return res.json(profile);
+      }
+      // Create Profile
+      profile = new Profile(profileFields);
+      await profile.save();
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('server error');
+    }
   }
 );
 
