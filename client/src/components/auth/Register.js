@@ -1,4 +1,5 @@
  import React, { Fragment, useState } from 'react';
+ import axios from 'axios';
 
 const Register = () => {
   // The way of doing it before
@@ -26,13 +27,29 @@ const Register = () => {
     const onchange = (e) =>
         setFormdata({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         if (password !== password2) {
-        // TO DO Error Alert
-        console.log('Password doesn\'t match');
+            // TO DO Error Alert
+            console.log("Password doesn't match");
         } else {
-        console.log(formData);
+            const newUSer = {
+            name,
+            email,
+            password,
+            };
+            try {
+            const config = {
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            };
+            const body = JSON.stringify(newUSer);
+            const res = await axios.post('/api/users', body, config);
+            console.log(res.data);
+            } catch (err) {
+            console.error(err.response.data);
+            }
         }
     };
 
