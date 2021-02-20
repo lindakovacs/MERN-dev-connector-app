@@ -29,7 +29,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 //@route    POST api/profile
-//@desc     Create or Update as USer Profile
+//@desc     Create or Update User Profile
 //@access   Private
 
 router.post(
@@ -37,8 +37,8 @@ router.post(
   [
     auth,
     [
-      check('status', 'Status is required ').not().isEmpty(),
-      check('skills', 'Skills is required ').not().isEmpty(),
+      check('status', 'Status is required field').not().isEmpty(),
+      check('skills', 'Skills is required field').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -147,7 +147,7 @@ router.get('/user/:user_id', async (req, res) => {
 
 //@route    DELETE api/profile/user/:user_id
 //@desc     Delete Profile, user and posts
-//@access   prvate
+//@access   Private
 
 router.delete('', auth, async (req, res) => {
   try {
@@ -171,17 +171,17 @@ router.delete('', auth, async (req, res) => {
 });
 
 //@route    PUT api/profile/experience
-//@desc     Add Profile experience
-//@access   prvate
+//@desc     Add Profile Experience
+//@access   Private
 
 router.put(
   '/experience',
   [
     auth,
     [
-      check('title', 'Title is required').not().isEmpty(),
-      check('company', 'Company is required').not().isEmpty(),
-      check('from', 'From date is required').not().isEmpty(),
+      check('title', 'Title is required field').not().isEmpty(),
+      check('company', 'Company is required field').not().isEmpty(),
+      check('from', 'From date is required field').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -249,10 +249,10 @@ router.put(
   [
     auth,
     [
-      check('school', 'Title is required').not().isEmpty(),
-      check('degree', 'Degree is required').not().isEmpty(),
-      check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
-      check('from', 'From date is required').not().isEmpty(),
+      check('school', 'Title is required field').not().isEmpty(),
+      check('degree', 'Degree is required field').not().isEmpty(),
+      check('fieldofstudy', 'Field of Study is required field').not().isEmpty(),
+      check('from', 'From date is required field').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -288,10 +288,9 @@ router.put(
       console.error(err.message);
       res.status(500).send('server error');
     }
-  }
-);
+  });
 
-//@route    DELETE api/profile/education/"edu_id
+//@route    DELETE api/profile/education/:edu_id
 //@desc     Delete Profile Education 
 //@access   Private
 
