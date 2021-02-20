@@ -13,18 +13,28 @@ const Register = () => {
   // this.setState = state;
   // Same as below
 
-  const [formData, setFormdata] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: '',
-  });
+    const [formData, setFormdata] = useState({
+        name: '',
+        email: '',
+        password: '',
+        password2: '',
+    });
 
-  // Pull name, email, passowrd from formData
-  const { name, email, password, password2 } = formData;
+    // Pull name, email, passowrd from formData
+    const { name, email, password, password2 } = formData;
 
-  const onchange = (e) =>
-    setFormdata({ ...formData, [e.target.name]: e.target.value });
+    const onchange = (e) =>
+        setFormdata({ ...formData, [e.target.name]: e.target.value });
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (password !== password2) {
+        // TO DO Error Alert
+        console.log('Password doesn\'t match');
+        } else {
+        console.log(formData);
+        }
+    };
 
   return (
     <Fragment>
@@ -32,7 +42,7 @@ const Register = () => {
       <p className='lead'>
         <i className='fas fa-user'></i> Create Your Account
       </p>
-      <form className='form' action='create-profile.html'>
+      <form className='form' onSubmit={(e) => onSubmit(e)}>
         <div className='form-group'>
           <input
             type='text'
