@@ -1,5 +1,5 @@
- import React, { Fragment, useState } from 'react';
- import axios from 'axios';
+import React, { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   // The way of doing it before
@@ -33,23 +33,7 @@ const Register = () => {
             // TO DO Error Alert
             console.log("Password doesn't match");
         } else {
-            const newUSer = {
-            name,
-            email,
-            password,
-            };
-            try {
-            const config = {
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            };
-            const body = JSON.stringify(newUSer);
-            const res = await axios.post('/api/users', body, config);
-            console.log(res.data);
-            } catch (err) {
-            console.error(err.response.data);
-            }
+            console.log('Success');
         }
     };
 
@@ -107,7 +91,7 @@ const Register = () => {
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
       <p className='my-1'>
-        Already have an account? <a href='login.html'>Sign In</a>
+        Already have an account? <Link to='/login'>Sign In</Link>
       </p>
     </Fragment>
   );
