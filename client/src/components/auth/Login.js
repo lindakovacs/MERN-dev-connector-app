@@ -10,7 +10,7 @@ const Login = () => {
   // Pull name, email, passowrd from formData
   const { email, password } = formData;
 
-  const onchange = (e) =>
+  const onChange = (e) =>
     setFormdata({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
@@ -31,7 +31,7 @@ const Login = () => {
             placeholder='Email Address'
             name='email'
             value={email}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             required
           />
         </div>
@@ -41,7 +41,7 @@ const Login = () => {
             placeholder='Password'
             name='password'
             value={password}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             minLength='6'
             required
           />

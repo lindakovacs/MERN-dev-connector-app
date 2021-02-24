@@ -1,41 +1,32 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types';
 
-const Register = () => {
-  // The way of doing it before
-  //state = {
-  //   formData : {
-  //   name: '',
-  //   email: '',
-  //   password: '',
-  //   password2:''
-  //   }
-  // }
-  // this.setState = state;
-  // Same as below
+const Register = ({ setAlert }) => {
+  const [formData, setFormdata] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
 
-    const [formData, setFormdata] = useState({
-        name: '',
-        email: '',
-        password: '',
-        password2: '',
-    });
+  // Pull name, email, passowrd from formData
+  const { name, email, password, password2 } = formData;
 
-    // Pull name, email, passowrd from formData
-    const { name, email, password, password2 } = formData;
+  const onChange = (e) =>
+    setFormdata({ ...formData, [e.target.name]: e.target.value });
 
-    const onchange = (e) =>
-        setFormdata({ ...formData, [e.target.name]: e.target.value });
-
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        if (password !== password2) {
-            // TO DO Error Alert
-            console.log("Password doesn't match");
-        } else {
-            console.log('Success');
-        }
-    };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== password2) {
+      // Error Alert
+      setAlert('Password doesn\'t match', 'danger');
+    } else {
+      console.log(formData);
+    }
+  };
 
   return (
     <Fragment>
@@ -50,7 +41,7 @@ const Register = () => {
             placeholder='Name'
             name='name'
             value={name}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             required
           />
         </div>
@@ -60,7 +51,7 @@ const Register = () => {
             placeholder='Email Address'
             name='email'
             value={email}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             required
           />
           <small className='form-text'>
@@ -74,7 +65,7 @@ const Register = () => {
             placeholder='Password'
             name='password'
             value={password}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             minLength='6'
           />
         </div>
@@ -84,7 +75,7 @@ const Register = () => {
             placeholder='Confirm Password'
             name='password2'
             value={password2}
-            onChange={(e) => onchange(e)}
+            onChange={(e) => onChange(e)}
             minLength='6'
           />
         </div>
@@ -97,4 +88,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+
+export default connect(null, { setAlert })(Register);
