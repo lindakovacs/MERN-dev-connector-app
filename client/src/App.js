@@ -69,8 +69,8 @@ function App() {
                 path='/add-education'
                 component={AddEducation}
               />
-              <Redirect from='*' to='/' />
             </Switch>
+            <Redirect from='*' to='/' component={Landing} />
           </section>
         </Fragment>
       </Router>
