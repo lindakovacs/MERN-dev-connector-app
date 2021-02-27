@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import ProfileAbout from './ProfileAbout';
+import ProfileEducation from './ProfileEducation';
 import { getProfileById } from '../../actions/profile';
 
 const Profile = ({
@@ -40,7 +41,18 @@ const Profile = ({
             </div>
             <div className='profile-edu bg-white p-2'>
               <h2 className='text-primary'>Education</h2>
-              <h4>No education credentials</h4>
+              {profile.education.length > 0 ? (
+                <Fragment>
+                  {profile.education.map((education) => (
+                    <ProfileEducation
+                      key={education._id}
+                      education={education}
+                    />
+                  ))}
+                </Fragment>
+              ) : (
+                <h4>No education credentials</h4>
+              )}
             </div>
           </div>
         </Fragment>
