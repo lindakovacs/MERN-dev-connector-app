@@ -1,10 +1,30 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profile';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 
-const CreateProfile = ({ createProfile, history }) => {
+const initialState = {
+  company: '',
+  website: '',
+  location: '',
+  status: '',
+  skills: '',
+  githubusername: '',
+  bio: '',
+  twitter: '',
+  facebook: '',
+  linkedin: '',
+  youtube: '',
+  instagram: '',
+};
+
+const EditProfile = ({
+  profile: { profile, loading },
+  createProfile,
+  getCurrentProfile,
+  history,
+}) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -21,6 +41,20 @@ const CreateProfile = ({ createProfile, history }) => {
   });
 
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+
+  useEffect(() => {
+    if (!profile) getCurrentProfile();
+    if (!loading) {
+      const profileData = { ...initialState };
+      for (const key in profileData) {
+        if (key in profileData) profileData[key] = profile[key];
+      }
+      for (const key in profile.social) {
+        if (key in profileData) profileData[key] = profile.social[key];
+      }
+      setFormData(profileData);
+    }
+  }, [loading]);
 
   const {
     company,
@@ -42,21 +76,20 @@ const CreateProfile = ({ createProfile, history }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createProfile(formData, history);
+    createProfile(formData, history, true);
   };
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Create Your Profile</h1>
+      <h1 className='large text-primary'>Edit Your Profile</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i> Let's get some information to make your
-        profile stand out
+        <i className='fas fa-user' /> Add some changes to your profile
       </p>
-      <small>* = required fields</small>
+      <small>* = required field</small>
       <form className='form' onSubmit={(e) => onSubmit(e)}>
         <div className='form-group'>
           <select name='status' value={status} onChange={(e) => onChange(e)}>
-            <option value='0'>* Select Professional Status</option>
+            <option>* Select Professional Status</option>
             <option value='Developer'>Developer</option>
             <option value='Junior Developer'>Junior Developer</option>
             <option value='Senior Developer'>Senior Developer</option>
@@ -137,7 +170,7 @@ const CreateProfile = ({ createProfile, history }) => {
             name='bio'
             value={bio}
             onChange={(e) => onChange(e)}
-          ></textarea>
+          />
           <small className='form-text'>Tell us a little about yourself</small>
         </div>
 
@@ -151,10 +184,11 @@ const CreateProfile = ({ createProfile, history }) => {
           </button>
           <span>Optional</span>
         </div>
+
         {displaySocialInputs && (
           <Fragment>
             <div className='form-group social-input'>
-              <i className='fab fa-twitter fa-2x'></i>
+              <i className='fab fa-twitter fa-2x' />
               <input
                 type='text'
                 placeholder='Twitter URL'
@@ -165,7 +199,7 @@ const CreateProfile = ({ createProfile, history }) => {
             </div>
 
             <div className='form-group social-input'>
-              <i className='fab fa-facebook fa-2x'></i>
+              <i className='fab fa-facebook fa-2x' />
               <input
                 type='text'
                 placeholder='Facebook URL'
@@ -176,7 +210,7 @@ const CreateProfile = ({ createProfile, history }) => {
             </div>
 
             <div className='form-group social-input'>
-              <i className='fab fa-youtube fa-2x'></i>
+              <i className='fab fa-youtube fa-2x' />
               <input
                 type='text'
                 placeholder='YouTube URL'
@@ -187,7 +221,7 @@ const CreateProfile = ({ createProfile, history }) => {
             </div>
 
             <div className='form-group social-input'>
-              <i className='fab fa-linkedin fa-2x'></i>
+              <i className='fab fa-linkedin fa-2x' />
               <input
                 type='text'
                 placeholder='Linkedin URL'
@@ -198,7 +232,7 @@ const CreateProfile = ({ createProfile, history }) => {
             </div>
 
             <div className='form-group social-input'>
-              <i className='fab fa-instagram fa-2x'></i>
+              <i className='fab fa-instagram fa-2x' />
               <input
                 type='text'
                 placeholder='Instagram URL'
@@ -211,7 +245,7 @@ const CreateProfile = ({ createProfile, history }) => {
         )}
 
         <input type='submit' className='btn btn-primary my-1' />
-        <Link className="btn btn-light my-1" to="/dashboard">
+        <Link className='btn btn-light my-1' to='/dashboard'>
           Go Back
         </Link>
       </form>
@@ -219,8 +253,16 @@ const CreateProfile = ({ createProfile, history }) => {
   );
 };
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
+  withRouter(EditProfile)
+);
