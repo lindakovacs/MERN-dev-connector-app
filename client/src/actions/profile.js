@@ -6,12 +6,49 @@ import {
   PROFILE_ERROR,
   ACCOUNT_DELETED,
   CLEAR_PROFIlE,
+  GET_PROFILES,
 } from './types';
 
 // Get Current User Profile
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/profile/me');
+
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get all profiles
+export const getProfiles = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFIlE });
+
+  try {
+    const res = await axios.get("/api/profile");
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get profile by ID
+export const getProfileById = (userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/user/${userId}`);
 
     dispatch({
       type: GET_PROFILE,
