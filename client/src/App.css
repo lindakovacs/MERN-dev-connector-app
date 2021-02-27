@@ -575,3 +575,11 @@ button {
     padding: 0.3rem 0.4rem;
   }
 }
+.footer {
+  height: 100px;
+  background: var(--primary-color);
+  padding: 2rem;
+  color: #fff;
+  justify-content: center;
+  text-align: center;
+}
