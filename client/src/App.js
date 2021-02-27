@@ -1,5 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
@@ -64,6 +69,7 @@ function App() {
                 path='/add-education'
                 component={AddEducation}
               />
+              <Redirect from='*' to='/' />
             </Switch>
           </section>
         </Fragment>
