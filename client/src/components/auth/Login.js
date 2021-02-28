@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 import PropTypes from 'prop-types';
-import { setAlert } from '../../actions/alert';
+// import { setAlert } from '../../actions/alert';
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormdata] = useState({
@@ -65,7 +65,7 @@ const Login = ({ login, isAuthenticated }) => {
   );
 };
 Login.propTypes = {
-  setAlert: PropTypes.func.isRequired,
+  // setAlert: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };
@@ -74,5 +74,6 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { setAlert, login })(Login);
+// export default connect(mapStateToProps, { setAlert, login })(Login);
+export default connect(mapStateToProps, { login })(Login);
 

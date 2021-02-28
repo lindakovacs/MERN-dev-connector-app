@@ -13,7 +13,8 @@ const User = require('../../models/User');
 router.post(
   '/',
   auth,
-  check('text', 'Text is required').notEmpty(),
+  // check('text', 'Text is required').notEmpty(),
+  [auth, [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -37,7 +38,8 @@ router.post(
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-});
+  }
+);
 
 // @route    GET api/posts
 // @desc     Get all posts
@@ -123,7 +125,8 @@ router.put('/like/:id', auth, async (req, res) => {
 
     await post.save();
 
-    return res.json(post.likes);
+    // return res.json(post.likes);
+    res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -138,18 +141,32 @@ router.put('/unlike/:id', auth, async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     // Check if the post has not been liked yet
-    if (!post.likes.some(like => like.user.toString() === req.user.id)) {
+    if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: 'Post has not been liked yet' });
     }
+
+    //  if (
+    //    post.likes.filter((like) => like.user.toString() === req.user.id)
+    //      .length === 0
+    //  ) {
+    //    return res.status(400).json({ msg: 'Post has not been liked yet' });
+    //  }
 
     // Remove the like
     post.likes = post.likes.filter(
       ({ user }) => user.toString() !== req.user.id
     );
+    // Get remove index
+    // const removeIndex = post.likes
+    //   .map((like) => like.user.toString())
+    //   .indexOf(req.user.id);
+
+    // post.likes.splice(removeIndex, 1);
 
     await post.save();
 
-    return res.json(post.likes);
+    // return res.json(post.likes);
+    res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -161,8 +178,9 @@ router.put('/unlike/:id', auth, async (req, res) => {
 // @access   Private
 router.post(
   '/comment/:id',
-  auth,
-  check('text', 'Text is required').notEmpty(),
+  // auth,
+  // check('text', 'Text is required').notEmpty(),
+  [auth, [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -187,7 +205,8 @@ router.post(
       console.error(err.message);
       res.status(500).send('Server Error');
     }
-});
+  }
+);
 
 // @route    DELETE api/posts/comment/:id/:comment_id
 // @desc     Delete Post Comment
@@ -212,6 +231,13 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     post.comments = post.comments.filter(
       ({ id }) => id !== req.params.comment_id
     );
+
+    // Get remove index
+    // const removeIndex = post.comments
+    //   .map((comment) => comment.user.toString())
+    //   .indexOf(req.user.id);
+
+    // post.comments.splice(removeIndex, 1);
 
     await post.save();
     return res.json(post.comments);

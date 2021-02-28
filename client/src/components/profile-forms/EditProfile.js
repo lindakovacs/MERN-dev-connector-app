@@ -54,7 +54,8 @@ const EditProfile = ({
       }
       setFormData(profileData);
     }
-  }, [loading]);
+  // }, [loading]);
+    }, [loading, getCurrentProfile]);
 
   const {
     company,

@@ -14,7 +14,8 @@ const User = require('../../models/User');
 // @access   Public
 router.post(
   '/',
-  check('name', 'Name is required').notEmpty(),
+  // check('name', 'Name is required').notEmpty(),
+  check('name', 'Name is required').not().isEmpty(),
   check('email', 'Please include a valid email').isEmail(),
   check(
     'password',
@@ -64,24 +65,23 @@ router.post(
       // Save the user registration details to DB
       await user.save();
 
-    //   res.send('User Registered');
+      //   res.send('User Registered');
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
 
-    jwt.sign(
-      payload,
-      config.get('jwtSecret'),
-      { expiresIn: '5 days' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: '5 days' },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');

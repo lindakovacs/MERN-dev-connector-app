@@ -24,4 +24,14 @@ module.exports = function (req, res, next) {
     console.error('Something is wrong with auth middleware');
     res.status(500).json({ msg: 'Server Error' });
   }
+  // Verity token
+  // try {
+  //   const decoded = jwt.verify(token, config.get('jwtSecret'));
+
+  //   req.user = decoded.user;
+  //   next();
+  // } catch (err) {
+  //   console.error(err.message);
+  //   res.status(401).json({ msg: 'Token is not valid' });
+  // }
 };
